@@ -46,7 +46,7 @@ func GetUserGroupRegion(gothUser goth.User) (string, error) {
 	var respObj UserGroupsResponse
 	json.Unmarshal(body, &respObj)
 
-	for i, group := range respObj.Groups {
+	for _, group := range respObj.Groups {
 		if group.Id == ApprovedGroupId {
 			return ApprovedGroupRegion, nil
 		}
