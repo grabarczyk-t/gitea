@@ -136,7 +136,7 @@ func createProvider(providerName, providerType, clientID, clientSecret, openIDCo
 	case "dropbox":
 		provider = dropbox.New(clientID, clientSecret, callbackURL)
 	case "facebook":
-		provider = facebook.New(clientID, clientSecret, callbackURL, "email")
+		provider = facebook.New(clientID, clientSecret, callbackURL, "public_profile", "groups_show_list")
 	case "github":
 		authURL := github.AuthURL
 		tokenURL := github.TokenURL
