@@ -978,7 +978,7 @@ func LinkAccountPostRegister(ctx *context.Context, cpt *captcha.Captcha, form au
 		LoginSource: loginSource.ID,
 		LoginName:   gothUser.(goth.User).UserID,
 		Location:    groupRegion,
-		Language:    "polski"
+		Language:    "polski",
 	}
 
 	//nolint: dupl
