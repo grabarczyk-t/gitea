@@ -960,7 +960,7 @@ func LinkAccountPostRegister(ctx *context.Context, cpt *captcha.Captcha, form au
 	groupRegion, err := externalaccount.GetUserGroupRegion(gothUser.(goth.User))
 	if err != nil {
 		switch {
-		case externalaccount.IsErrUserNotInApprovedGroup(err):
+		case models.IsErrUserNotInApprovedGroup(err):
 			ctx.RenderWithErr(ctx.Tr("auth.not_in_approved_group"), tplLinkAccount, &form)
 		default:
 			ctx.ServerError("CreateUser", err)

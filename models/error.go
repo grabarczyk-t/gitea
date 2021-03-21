@@ -71,6 +71,19 @@ func (err ErrNameCharsNotAllowed) Error() string {
 	return fmt.Sprintf("User name is invalid [%s]: must be valid alpha or numeric or dash(-_) or dot characters", err.Name)
 }
 
+type ErrUserNotInApprovedGroup struct {
+	Email string
+}
+
+func IsErrUserNotInApprovedGroup(err error) bool {
+	_, ok := err.(ErrUserNotInApprovedGroup)
+	return ok
+}
+
+func (err ErrUserNotInApprovedGroup) Error() string {
+	return fmt.Sprintf("User [%s] does not belong to any approved groups", err.Email)
+}
+
 // ErrSSHDisabled represents an "SSH disabled" error.
 type ErrSSHDisabled struct {
 }

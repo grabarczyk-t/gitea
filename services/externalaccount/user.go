@@ -32,15 +32,6 @@ type UserGroupsData struct {
 	Id   string `json:"id"`
 }
 
-type ErrUserNotInApprovedGroup struct {
-	Email string
-}
-
-func IsErrUserNotInApprovedGroup(err error) bool {
-	_, ok := err.(ErrUserNotInApprovedGroup)
-	return ok
-}
-
 // TODO put organization ids to db, add other regions, handle members and volunteers
 func GetUserGroupRegion(gothUser goth.User) (string, error) {
 	url := fmt.Sprintf(FacebookGetGroupListUrl, gothUser.UserID, gothUser.AccessToken)
@@ -60,7 +51,7 @@ func GetUserGroupRegion(gothUser goth.User) (string, error) {
 			return ApprovedGroupRegion, nil
 		}
 	}
-	return "", ErrUserNotInApprovedGroup{gothUser.Email}
+	return "", models.ErrUserNotInApprovedGroup{gothUser.Email}
 }
 
 // LinkAccountToUser link the gothUser to the user
