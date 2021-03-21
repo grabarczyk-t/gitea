@@ -93,7 +93,7 @@ func ServCommand(ctx *macaron.Context) {
 	}
 
 	// The default unit we're trying to look at is issues
-	unitType := models.UnitTypeIssues
+	unitType := models.UnitTypeCode
 
 	// Unless we're a wiki...
 	if strings.HasSuffix(repoName, ".wiki") {
