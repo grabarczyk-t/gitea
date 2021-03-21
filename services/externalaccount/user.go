@@ -11,7 +11,48 @@ import (
 	"code.gitea.io/gitea/modules/structs"
 
 	"github.com/markbates/goth"
+	"fmt"
+	"io/ioutil"
+	"encoding/json"
+	"net/http"
 )
+
+const (
+	FacebookGetGroupListUrl = "https://graph.facebook.com/v10.0/%s/groups?access_token=%s"
+	ApprovedGroupId = "2654430914769218"
+	ApprovedGroupRegion = "Małopolska"
+)
+
+type UserGroupsResponse struct {
+	Groups []UserGroupsData `json:"data"`
+}
+
+type UserGroupsData struct {
+	Name string `json:"name"`
+	Id   string `json:"id"`
+}
+
+// TODO put organization ids to db, add other regions, handle members and volunteers
+func GetUserGroupRegion(gothUser goth.User) (string, error) {
+	url := fmt.Sprintf(FacebookGetGroupListUrl, gothUser.UserID, gothUser.AccessToken)
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var respObj UserGroupsResponse
+	json.Unmarshal(body, &respObj)
+
+	for i, group := range respObj.Groups {
+		if group.Id == ApprovedGroupId {
+			return ApprovedGroupRegion, nil
+		}
+	}
+	return nil, nil
+}
 
 // LinkAccountToUser link the gothUser to the user
 func LinkAccountToUser(user *models.User, gothUser goth.User) error {

@@ -957,6 +957,15 @@ func LinkAccountPostRegister(ctx *context.Context, cpt *captcha.Captcha, form au
 		ctx.ServerError("CreateUser", err)
 	}
 
+	groupRegion, err := externalaccount.GetUserGroupRegion(gothUser.(goth.User))
+	if err != nil {
+		ctx.ServerError("CreateUser", err)
+	}
+
+	if groupRegion == nil {
+		ctx.RenderWithErr(ctx.Tr("auth.not_in_approved_group"), tplLinkAccount, &form)
+	}
+
 	u := &models.User{
 		Name:        form.UserName,
 		Email:       form.Email,
@@ -965,6 +974,7 @@ func LinkAccountPostRegister(ctx *context.Context, cpt *captcha.Captcha, form au
 		LoginType:   models.LoginOAuth2,
 		LoginSource: loginSource.ID,
 		LoginName:   gothUser.(goth.User).UserID,
+		Location:    groupRegion,
 	}
 
 	//nolint: dupl
@@ -1027,6 +1037,10 @@ func LinkAccountPostRegister(ctx *context.Context, cpt *captcha.Captcha, form au
 	}
 
 	ctx.Redirect(setting.AppSubURL + "/user/login")
+}
+
+func HandleUserGroupCheck(ctx *context.Context) {
+
 }
 
 // HandleSignOut resets the session and sets the cookies
