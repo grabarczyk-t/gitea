@@ -966,6 +966,7 @@ func LinkAccountPostRegister(ctx *context.Context, cpt *captcha.Captcha, form au
 		ctx.RenderWithErr(ctx.Tr("auth.not_in_approved_group"), tplLinkAccount, &form)
 	}
 
+	// TODO make a separate setting for default language
 	u := &models.User{
 		Name:        form.UserName,
 		Email:       form.Email,
@@ -975,6 +976,7 @@ func LinkAccountPostRegister(ctx *context.Context, cpt *captcha.Captcha, form au
 		LoginSource: loginSource.ID,
 		LoginName:   gothUser.(goth.User).UserID,
 		Location:    groupRegion,
+		Language:    "polski"
 	}
 
 	//nolint: dupl
