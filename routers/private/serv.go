@@ -92,8 +92,8 @@ func ServCommand(ctx *macaron.Context) {
 		modeString = "write to"
 	}
 
-	// The default unit we're trying to look at is code
-	unitType := models.UnitTypeCode
+	// The default unit we're trying to look at is issues
+	unitType := models.UnitTypeIssues
 
 	// Unless we're a wiki...
 	if strings.HasSuffix(repoName, ".wiki") {
