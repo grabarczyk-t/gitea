@@ -51,6 +51,7 @@ type Issue struct {
 	IsPull           bool         `xorm:"INDEX"` // Indicates whether is a pull request or not.
 	PullRequest      *PullRequest `xorm:"-"`
 	NumComments      int
+	NumVotes         int
 	Ref              string
 
 	DeadlineUnix timeutil.TimeStamp `xorm:"INDEX"`
@@ -1119,6 +1120,10 @@ func sortIssuesSession(sess *xorm.Session, sortType string, priorityRepoID int64
 		sess.Desc("issue.num_comments")
 	case "leastcomment":
 		sess.Asc("issue.num_comments")
+	case "mostvotes":
+		sess.Desc("issue.num_votes")
+	case "leastvotes":
+		sess.Asc("issue.num_votes")
 	case "priority":
 		sess.Desc("issue.priority")
 	case "nearduedate":
