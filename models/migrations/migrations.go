@@ -354,6 +354,8 @@ func EnsureUpToDate(x *xorm.Engine) error {
 
 // Migrate database to current version
 func Migrate(x *xorm.Engine) error {
+	log.Trace("Started Migrations")
+
 	// Set a new clean the default mapper to GonicMapper as that is the default for Gitea.
 	x.SetMapper(names.GonicMapper{})
 	if err := x.Sync(new(Version)); err != nil {
@@ -376,6 +378,7 @@ func Migrate(x *xorm.Engine) error {
 	}
 
 	v := currentVersion.Version
+	log.Trace("Current version: %d", v)
 	if minDBVersion > v {
 		log.Fatal(`Gitea no longer supports auto-migration from your previously installed version.
 Please try upgrading to a lower version first (suggested v1.6.4), then upgrade to this version.`)

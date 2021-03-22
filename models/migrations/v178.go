@@ -12,11 +12,11 @@ import (
 
 func addNumVotesColumnToIssueTable(x *xorm.Engine) error {
 	type Issue struct {
-  		NumVotes int `xorm:"NOT NULL DEFAULT 0"`
-  	}
+		NumVotes int `xorm:"NOT NULL DEFAULT 0"`
+	}
 
-  	if err := x.Sync2(new(Webhook)); err != nil {
-  		return fmt.Errorf("Sync2: %v", err)
-  	}
-  	return nil
+	if err := x.Sync2(new(Webhook)); err != nil {
+		return fmt.Errorf("Sync2: %v", err)
+	}
+	return nil
 }
