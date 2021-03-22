@@ -15,7 +15,7 @@ func addNumVotesColumnToIssueTable(x *xorm.Engine) error {
 		NumVotes int `xorm:"NOT NULL DEFAULT 0"`
 	}
 
-	if err := x.Sync2(new(Webhook)); err != nil {
+	if err := x.Sync2(new(Issue)); err != nil {
 		return fmt.Errorf("Sync2: %v", err)
 	}
 	return nil
