@@ -650,7 +650,8 @@ func handleOAuth2SignIn(u *models.User, gothUser goth.User, ctx *context.Context
 			u.Language = ctx.Locale.Language()
 			if err := models.UpdateUserCols(u, "language"); err != nil {
 				log.Error(fmt.Sprintf("Error updating user language [user: %d, locale: %s]", u.ID, u.Language))
-				return setting.AppSubURL + "/"
+				ctx.ServerError("UserSignIn", err)
+				return
 			}
 		}
 

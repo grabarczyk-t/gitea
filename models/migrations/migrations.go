@@ -249,6 +249,8 @@ var migrations = []Migration{
 	NewMigration("add changed_protected_files column for pull_request table", addChangedProtectedFilesPullRequestColumn),
 	// v156 -> v157
 	NewMigration("Add NumVotes column to issue table", addNumVotesColumnToIssueTable),
+	// v157 -> v158
+        NewMigration("Add Vote Table", addVoteTable),
 }
 
 // GetCurrentDBVersion returns the current db version

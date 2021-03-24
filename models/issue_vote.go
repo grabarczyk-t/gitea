@@ -25,7 +25,7 @@ func VoteIssue(userID, issueID int64, vote bool) error {
 		return err
 	}
 
-	if star {
+	if vote {
 		if isVoting(sess, userID, issueID) {
 			return nil
 		}
@@ -53,7 +53,7 @@ func VoteIssue(userID, issueID int64, vote bool) error {
 }
 
 // isVoting checks if user has voted given issue.
-func isVoting(userID, issueID int64) bool {
+func IsVoting(userID, issueID int64) bool {
 	return isVoting(x, userID, issueID)
 }
 

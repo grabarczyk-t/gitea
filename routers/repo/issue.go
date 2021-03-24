@@ -1092,7 +1092,7 @@ func ViewIssue(ctx *context.Context) {
 	ctx.Data["RequireSimpleMDE"] = true
 	ctx.Data["IsProjectsEnabled"] = ctx.Repo.CanRead(models.UnitTypeProjects)
 	ctx.Data["IsAttachmentEnabled"] = setting.Attachment.Enabled
-	ctx.Data["IsVotingIssue"] = models.isVoting(ctx.User.ID, issue.ID)
+	ctx.Data["IsVotingIssue"] = models.IsVoting(ctx.User.ID, issue.ID)
 	upload.AddUploadContext(ctx, "comment")
 
 	if err = issue.LoadAttributes(); err != nil {
@@ -2563,18 +2563,36 @@ func attachmentsHTML(ctx *context.Context, attachments []*models.Attachment) str
 }
 
 func IssueVote(ctx *context.Context) {
-	err = models.VoteIssue(ctx.User.ID, ctx.Issue.ID, true)
+	issue, err := models.GetIssueByIndex(ctx.Repo.Repository.ID, ctx.ParamsInt64(":index"))
 	if err != nil {
-		ctx.ServerError("Vote Issue"), err)
+		if models.IsErrIssueNotExist(err) {
+			ctx.NotFound("GetIssueByIndex", err)
+		} else {
+			ctx.ServerError("GetIssueByIndex", err)
+		}
+		return
+	}
+	err = models.VoteIssue(ctx.User.ID, issue.ID, true)
+	if err != nil {
+		ctx.ServerError("Vote Issue", err)
 		return
 	}
 	ctx.RedirectToFirst(ctx.Query("redirect_to"), ctx.Link)
 }
 
 func IssueUnvote(ctx *context.Context) {
-	err = models.VoteIssue(ctx.User.ID, ctx.Issue.ID, false)
+	issue, err := models.GetIssueByIndex(ctx.Repo.Repository.ID, ctx.ParamsInt64(":index"))
 	if err != nil {
-		ctx.ServerError("Unvote Issue"), err)
+		if models.IsErrIssueNotExist(err) {
+			ctx.NotFound("GetIssueByIndex", err)
+		} else {
+			ctx.ServerError("GetIssueByIndex", err)
+		}
+		return
+	}
+	err = models.VoteIssue(ctx.User.ID, issue.ID, false)
+	if err != nil {
+		ctx.ServerError("Unvote Issue", err)
 		return
 	}
 	ctx.RedirectToFirst(ctx.Query("redirect_to"), ctx.Link)
