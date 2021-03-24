@@ -722,6 +722,14 @@ func Stars(ctx *context.Context) {
 	RenderUserCards(ctx, ctx.Repo.Repository.NumStars, ctx.Repo.Repository.GetStargazers, tplWatchers)
 }
 
+// Voters render issues' voters
+func Voters(ctx *context.Context) {
+	ctx.Data["Title"] = ctx.Tr("issue.voters")
+	ctx.Data["CardsTitle"] = ctx.Tr("issue.voters")
+	ctx.Data["PageIsVoters"] = true
+	RenderUserCards(ctx, ctx.Issue.NumVotes, ctx.Issue.GetVoters, tplWatchers)
+}
+
 // Forks render repository's forked users
 func Forks(ctx *context.Context) {
 	ctx.Data["Title"] = ctx.Tr("repos.forks")
