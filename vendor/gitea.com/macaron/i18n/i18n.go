@@ -172,6 +172,7 @@ type LangType struct {
 // Otherwise it may not recognize browser input.
 func I18n(options ...Options) macaron.Handler {
 	opt := prepareOptions(options)
+	initLocales(opt)
 	return func(ctx *macaron.Context) {
 		isNeedRedir := false
 		hasCookie := false
