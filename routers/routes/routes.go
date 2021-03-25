@@ -251,7 +251,7 @@ func NewMacaron() *macaron.Macaron {
 		Files:          localFiles,
 		Langs:          setting.Langs,
 		Names:          setting.Names,
-		DefaultLang:    "en-US",
+		DefaultLang:    "pl-PL",
 		Redirect:       false,
 		CookieHttpOnly: true,
 		Secure:         setting.SessionConfig.Secure,

@@ -195,9 +195,12 @@ func I18n(options ...Options) macaron.Handler {
 			hasCookie = false
 		}
 
-		// 3. Set default language
+		// 3. Get language information from 'Accept-Language'.
+		// The first element in the list is chosen to be the default language automatically.
 		if len(lang) == 0 {
-			lang = "pl-PL"
+			tags, _, _ := language.ParseAcceptLanguage(ctx.Req.Header.Get("Accept-Language"))
+			tag, _, _ := m.Match(tags...)
+			lang = tag.String()
 			isNeedRedir = false
 		}
 
