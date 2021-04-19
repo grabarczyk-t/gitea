@@ -926,6 +926,7 @@ func RegisterRoutes(m *macaron.Macaron) {
 
 	m.Group("/:username/:reponame", func() {
 		m.Group("", func() {
+			m.Get("", repo.Issues)
 			m.Get("/^:type(issues|pulls)$", repo.Issues)
 			m.Get("/^:type(issues|pulls)$/:index", repo.ViewIssue)
 			m.Get("/labels/", reqRepoIssuesOrPullsReader, repo.RetrieveLabels, repo.Labels)
@@ -1073,7 +1074,7 @@ func RegisterRoutes(m *macaron.Macaron) {
 
 	m.Group("/:username", func() {
 		m.Group("/:reponame", func() {
-			m.Get("", repo.SetEditorconfigIfExists, repo.Home)
+			m.Get("/files", repo.SetEditorconfigIfExists, repo.Home)
 			m.Get("\\.git$", repo.SetEditorconfigIfExists, repo.Home)
 		}, ignSignIn, context.RepoAssignment(), context.RepoRef(), context.UnitTypes())
 

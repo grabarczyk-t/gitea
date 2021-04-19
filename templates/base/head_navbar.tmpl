@@ -11,7 +11,7 @@
 	{{if and .IsSigned .MustChangePassword}}
 		{{/* No links */}}
 	{{else if .IsSigned}}
-		<a class="item {{if .PageIsDashboard}}active{{end}}" href="{{AppSubUrl}}/">{{.i18n.Tr "dashboard"}}</a>
+		<a class="item {{if .PageIsHome}}active{{end}}" href="{{AppSubUrl}}/">{{.i18n.Tr "home"}}</a>
 		{{if not .UnitIssuesGlobalDisabled}}
 		<a class="item {{if .PageIsIssues}}active{{end}}" href="{{AppSubUrl}}/issues">{{.i18n.Tr "issues"}}</a>
 		{{end}}
@@ -21,10 +21,9 @@
 		{{if not (and .UnitIssuesGlobalDisabled .UnitPullsGlobalDisabled)}}
 		{{if .ShowMilestonesDashboardPage}}<a class="item {{if .PageIsMilestonesDashboard}}active{{end}}" href="{{AppSubUrl}}/milestones">{{.i18n.Tr "milestones"}}</a>{{end}}
 		{{end}}
-		<a class="item {{if .PageIsExplore}}active{{end}}" href="{{AppSubUrl}}/explore/repos">{{.i18n.Tr "explore"}}</a>
+		<a class="item {{if .PageIsExplore}}active{{end}}" href="{{AppSubUrl}}/explore/organizations">{{.i18n.Tr "explore.organizations"}}</a>
 	{{else if .IsLandingPageHome}}
 		<a class="item {{if .PageIsHome}}active{{end}}" href="{{AppSubUrl}}/">{{.i18n.Tr "home"}}</a>
-		<a class="item {{if .PageIsExplore}}active{{end}}" href="{{AppSubUrl}}/explore/repos">{{.i18n.Tr "explore"}}</a>
 	{{else if .IsLandingPageExplore}}
 		<a class="item {{if .PageIsExplore}}active{{end}}" href="{{AppSubUrl}}/explore/repos">{{.i18n.Tr "home"}}</a>
 	{{else if .IsLandingPageOrganizations}}
@@ -79,27 +78,6 @@
 				</span>
 			</a>
 
-			<div class="ui dropdown jump item poping up" data-content="{{.i18n.Tr "create_new"}}" data-variation="tiny inverted">
-				<span class="text">
-					<span class="fitted">{{svg "octicon-plus"}}</span>
-					<span class="sr-mobile-only">{{.i18n.Tr "create_new"}}</span>
-					<span class="fitted not-mobile">{{svg "octicon-triangle-down"}}</span>
-				</span>
-				<div class="menu">
-					<a class="item" href="{{AppSubUrl}}/repo/create">
-						<span class="fitted">{{svg "octicon-plus"}}</span> {{.i18n.Tr "new_repo"}}
-					</a>
-					<a class="item" href="{{AppSubUrl}}/repo/migrate">
-						<span class="fitted">{{svg "octicon-repo-push"}}</span> {{.i18n.Tr "new_migrate"}}
-					</a>
-					{{if .SignedUser.CanCreateOrganization}}
-					<a class="item" href="{{AppSubUrl}}/org/create">
-						<span class="fitted">{{svg "octicon-organization"}}</span> {{.i18n.Tr "new_org"}}
-					</a>
-					{{end}}
-				</div><!-- end content create new menu -->
-			</div><!-- end dropdown menu create new -->
-
 			<div class="ui dropdown jump item poping up" tabindex="-1" data-content="{{.i18n.Tr "user_profile_and_more"}}" data-variation="tiny inverted">
 				<span class="text">
 					<img class="ui tiny avatar image" width="24" height="24" src="{{.SignedUser.RelAvatarLink}}">
@@ -147,7 +125,6 @@
 			</div><!-- end dropdown avatar menu -->
 		</div><!-- end signed user right menu -->
 	{{else}}
-		<a class="item" target="_blank" rel="noopener noreferrer" href="https://docs.gitea.io">{{.i18n.Tr "help"}}</a>
 		<div class="right stackable menu">
 			{{if .ShowRegistrationButton}}
 				<a class="item{{if .PageIsSignUp}} active{{end}}" href="{{AppSubUrl}}/user/sign_up">

@@ -32,11 +32,7 @@
 					<span class="middle">{{svg "octicon-mirror"}}</span>
 				{{end}}
 				<div class="ui right metas">
-					{{if .PrimaryLanguage }}
-					<span class="text grey"><i class="color-icon" style="background-color: {{.PrimaryLanguage.Color}}"></i>{{ .PrimaryLanguage.Language }}</span>
-					{{end}}
-					<span class="text grey">{{svg "octicon-star"}} {{.NumStars}}</span>
-					<span class="text grey">{{svg "octicon-git-branch"}} {{.NumForks}}</span>
+					<span class="text grey">{{svg "octicon-issue-opened"}} {{.NumOpenIssues}}</span>
 				</div>
 			</div>
 			<div class="description">
