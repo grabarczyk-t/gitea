@@ -1,6 +1,17 @@
 <div class="four wide column">
 	<div class="ui segment metas">
-		{{template "repo/issue/branch_selector_field" .}}
+		<form method="post" action="{{$.Link}}/{{if $.IsVotingIssue}}un{{end}}vote?redirect_to={{$.Link}}">
+			{{$.CsrfTokenHtml}}
+			<div class="ui labeled fluid button{{if not $.IsSigned}} poping up{{end}}" tabindex="0"{{if not $.IsSigned}} data-content="{{$.i18n.Tr "repo.vote_guest_user" }}" data-position="top center" data-variation="tiny"{{end}}>
+				<button type="submit" class="ui fluid basic button"{{if not $.IsSigned}} disabled{{end}}>
+					{{if $.IsVotingIssue}}{{svg "octicon-thumbsup"}}{{$.i18n.Tr "repo.unvote"}}{{else}}{{svg "octicon-thumbsup"}}{{$.i18n.Tr "repo.vote"}}{{end}}
+				</button>
+				<a class="ui basic label" href="{{.Link}}/voters">
+					{{.Issue.NumVotes}}
+				</a>
+			</div>
+		</form>
+		<div class="ui divider"></div>
 
 		{{if .Issue.IsPull }}
 

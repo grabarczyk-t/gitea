@@ -722,6 +722,23 @@ func Stars(ctx *context.Context) {
 	RenderUserCards(ctx, ctx.Repo.Repository.NumStars, ctx.Repo.Repository.GetStargazers, tplWatchers)
 }
 
+// Voters render issues' voters
+func Voters(ctx *context.Context) {
+	ctx.Data["Title"] = ctx.Tr("repo.voters")
+	ctx.Data["CardsTitle"] = ctx.Tr("repo.voters")
+	ctx.Data["PageIsVoters"] = true
+	issue, err := models.GetIssueByIndex(ctx.Repo.Repository.ID, ctx.ParamsInt64(":index"))
+	if err != nil {
+		if models.IsErrIssueNotExist(err) {
+			ctx.NotFound("GetIssueByIndex", err)
+		} else {
+			ctx.ServerError("GetIssueByIndex", err)
+		}
+		return
+	}
+	RenderUserCards(ctx, issue.NumVotes, issue.GetVoters, tplWatchers)
+}
+
 // Forks render repository's forked users
 func Forks(ctx *context.Context) {
 	ctx.Data["Title"] = ctx.Tr("repos.forks")

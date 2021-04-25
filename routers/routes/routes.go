@@ -797,6 +797,8 @@ func RegisterRoutes(m *macaron.Macaron) {
 				m.Post("/title", repo.UpdateIssueTitle)
 				m.Post("/content", repo.UpdateIssueContent)
 				m.Post("/watch", repo.IssueWatch)
+				m.Post("/vote", repo.IssueVote)
+				m.Post("/unvote", repo.IssueUnvote)
 				m.Post("/ref", repo.UpdateIssueRef)
 				m.Group("/dependency", func() {
 					m.Post("/add", repo.AddDependency)
@@ -815,6 +817,7 @@ func RegisterRoutes(m *macaron.Macaron) {
 				m.Post("/unlock", reqRepoIssueWriter, repo.UnlockIssue)
 			}, context.RepoMustNotBeArchived())
 			m.Group("/:index", func() {
+				m.Get("/voters", repo.Voters)
 				m.Get("/attachments", repo.GetIssueAttachments)
 				m.Get("/attachments/:uuid", repo.GetAttachment)
 			})
