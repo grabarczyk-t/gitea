@@ -644,6 +644,19 @@ func handleOAuth2SignIn(u *models.User, gothUser goth.User, ctx *context.Context
 			log.Error("Error storing session: %v", err)
 		}
 
+		// Language setting of the user overwrites the one previously set
+		// If the user does not have a locale set, we save the current one.
+		if len(u.Language) == 0 {
+			u.Language = ctx.Locale.Language()
+			if err := models.UpdateUserCols(u, "language"); err != nil {
+				log.Error(fmt.Sprintf("Error updating user language [user: %d, locale: %s]", u.ID, u.Language))
+				ctx.ServerError("UserSignIn", err)
+				return
+			}
+		}
+
+		ctx.SetCookie("lang", u.Language, nil, setting.AppSubURL, setting.SessionConfig.Domain, setting.SessionConfig.Secure, true)
+
 		// Clear whatever CSRF has right now, force to generate a new one
 		ctx.SetCookie(setting.CSRFCookieName, "", -1, setting.AppSubURL, setting.SessionConfig.Domain, setting.SessionConfig.Secure, true)
 
